@@ -24,9 +24,9 @@ struct TestTaskApp: App {
                 if showLaunchView {
                     LaunchView()
                         .onAppear {
-                            Timer.scheduledTimer(withTimeInterval: 4, repeats: false) { timer in
-                                showLaunchView = false
-                            }
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                                showLaunchView.toggle()
+                                }
                         }
                 } else {
                     RootView(viewModel: .init(container: environment.container))
