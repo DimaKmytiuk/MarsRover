@@ -27,21 +27,22 @@ enum BottomSheet {
 
 final class BottomSheetViewModel: ObservableObject {
     
-    @Published var selectedDate: Date = Date()
-    @Published var filtersArray: [String]?
+    @Published var selectedDate: Date
+    @Published var itemsArray: [String]?
     @Published var selectedIndex: Int
-    @Binding var selectedItem: String
+    @Binding var selectedFilter: FilterModel
     @State var pickerHeader: BottomSheet
     
-    init(array: [String]? = nil,
+    init(itemsArray: [String],
+         selectedDate: Date,
          title: BottomSheet,
          selectedIndex: Int,
-         selectedItem: Binding<String>) {
-        self.filtersArray = array
+         selectedFilter: Binding<FilterModel>
+    ) {
+        self.selectedDate = selectedDate
+        self.itemsArray = itemsArray
         self.pickerHeader = title
         self.selectedIndex = selectedIndex
-        _selectedItem = selectedItem
-        
-        
+        _selectedFilter = selectedFilter
     }
 }

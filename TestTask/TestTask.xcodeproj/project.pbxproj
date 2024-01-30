@@ -33,13 +33,14 @@
 		74F52A5A2B673BB1005808FA /* ImageLoaderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74F52A592B673BB1005808FA /* ImageLoaderViewModel.swift */; };
 		74F52A5C2B676748005808FA /* Publisher+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74F52A5B2B676748005808FA /* Publisher+Extension.swift */; };
 		74F52A5E2B676A66005808FA /* LaunchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74F52A5D2B676A66005808FA /* LaunchView.swift */; };
-		74F52A612B6770E7005808FA /* APIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74F52A602B6770E7005808FA /* APIService.swift */; };
+		74F52A612B6770E7005808FA /* WebService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74F52A602B6770E7005808FA /* WebService.swift */; };
 		74F52A632B678FF5005808FA /* String+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74F52A622B678FF5005808FA /* String+Extensions.swift */; };
 		74F52A652B67A429005808FA /* View+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74F52A642B67A429005808FA /* View+Extensions.swift */; };
 		74F52A672B67A47F005808FA /* FilterModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74F52A662B67A47F005808FA /* FilterModel.swift */; };
 		74F52A6B2B67A54A005808FA /* PhotoDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74F52A6A2B67A54A005808FA /* PhotoDTO.swift */; };
 		74F52A6E2B67A58B005808FA /* CameraDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74F52A6D2B67A58B005808FA /* CameraDTO.swift */; };
 		74F52A702B67A5A7005808FA /* RoverDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74F52A6F2B67A5A7005808FA /* RoverDTO.swift */; };
+		74F52A722B683C62005808FA /* AppEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74F52A712B683C62005808FA /* AppEngine.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -71,13 +72,14 @@
 		74F52A592B673BB1005808FA /* ImageLoaderViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageLoaderViewModel.swift; sourceTree = "<group>"; };
 		74F52A5B2B676748005808FA /* Publisher+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Publisher+Extension.swift"; sourceTree = "<group>"; };
 		74F52A5D2B676A66005808FA /* LaunchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchView.swift; sourceTree = "<group>"; };
-		74F52A602B6770E7005808FA /* APIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIService.swift; sourceTree = "<group>"; };
+		74F52A602B6770E7005808FA /* WebService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebService.swift; sourceTree = "<group>"; };
 		74F52A622B678FF5005808FA /* String+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extensions.swift"; sourceTree = "<group>"; };
 		74F52A642B67A429005808FA /* View+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Extensions.swift"; sourceTree = "<group>"; };
 		74F52A662B67A47F005808FA /* FilterModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterModel.swift; sourceTree = "<group>"; };
 		74F52A6A2B67A54A005808FA /* PhotoDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoDTO.swift; sourceTree = "<group>"; };
 		74F52A6D2B67A58B005808FA /* CameraDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraDTO.swift; sourceTree = "<group>"; };
 		74F52A6F2B67A5A7005808FA /* RoverDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoverDTO.swift; sourceTree = "<group>"; };
+		74F52A712B683C62005808FA /* AppEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppEngine.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -141,6 +143,7 @@
 			isa = PBXGroup;
 			children = (
 				74F52A0B2B5AD191005808FA /* TestTaskApp.swift */,
+				74F52A712B683C62005808FA /* AppEngine.swift */,
 				74F52A1E2B5DC18B005808FA /* AppEnvironment.swift */,
 			);
 			path = System;
@@ -265,7 +268,7 @@
 			isa = PBXGroup;
 			children = (
 				74F52A4A2B649CC7005808FA /* FilterService.swift */,
-				74F52A602B6770E7005808FA /* APIService.swift */,
+				74F52A602B6770E7005808FA /* WebService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -395,6 +398,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				74F52A6B2B67A54A005808FA /* PhotoDTO.swift in Sources */,
+				74F52A722B683C62005808FA /* AppEngine.swift in Sources */,
 				74F52A322B5F3147005808FA /* RoverModel.swift in Sources */,
 				74F52A442B648E80005808FA /* FilterLocalRepository.swift in Sources */,
 				74F52A232B5DCE94005808FA /* DependencyInjector.swift in Sources */,
@@ -419,7 +423,7 @@
 				74F52A542B673302005808FA /* Date+Formatters.swift in Sources */,
 				74F52A4B2B649CC7005808FA /* FilterService.swift in Sources */,
 				74F52A1F2B5DC18B005808FA /* AppEnvironment.swift in Sources */,
-				74F52A612B6770E7005808FA /* APIService.swift in Sources */,
+				74F52A612B6770E7005808FA /* WebService.swift in Sources */,
 				74F52A392B62D7FC005808FA /* BottomSheetView.swift in Sources */,
 				74F52A672B67A47F005808FA /* FilterModel.swift in Sources */,
 				74F52A2F2B5ECBE2005808FA /* Color+Extension.swift in Sources */,

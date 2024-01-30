@@ -8,16 +8,16 @@
 import Foundation
 
 extension Date {
-    func string(formatter: DateFormatter) -> String {
+     func string(formatter: DateFormatter) -> String {
         return formatter.string(from: self)
     }
     
     static func changeDate(date: String) -> String {
         let inputDateString = date
-        let inputDateFormatter = DateFormatter.customDateWithDashFormatter
+        let inputDateFormatter = DateFormatter.dash
         
         if let inputDate = inputDateFormatter.date(from: inputDateString) {
-            let outputString = inputDate.string(formatter: .customFormattedStringDateFormatter)
+            let outputString = inputDate.string(formatter: .userFriendly)
             
             return outputString
         } else {
@@ -28,13 +28,13 @@ extension Date {
 
 extension DateFormatter {
     
-    static var customFormattedStringDateFormatter: DateFormatter {
+    static var userFriendly: DateFormatter {
         let formatter = DateFormatter()
         formatter.dateFormat = "MMM d, yyyy"
         return formatter
     }
     
-    static var customDateWithDashFormatter: DateFormatter {
+    static var dash: DateFormatter {
       let formatter = DateFormatter()
       formatter.dateFormat = "yyyy-MM-dd"
       return formatter

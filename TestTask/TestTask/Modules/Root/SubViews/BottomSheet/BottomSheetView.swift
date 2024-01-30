@@ -11,15 +11,14 @@ struct BottomSheetView: View {
     
     @Binding var isShowing: Bool
     @ObservedObject var viewModel: BottomSheetViewModel
-    @State private var isDateSelected = false
+    @Environment(\.presentationMode) var presintationMode
 
-    
+
     init(isShowing: Binding<Bool>,
-         viewModel: BottomSheetViewModel)
-    {
+         viewModel: BottomSheetViewModel) {
         self.viewModel = viewModel
         _isShowing = isShowing
-    }
+         }
     
     var body: some View {
         ZStack(alignment: .bottom) {
@@ -45,7 +44,7 @@ struct BottomSheetView: View {
                         constructDatePicker()
                     }
                     
-                    if let array = viewModel.filtersArray, !array.isEmpty {
+                    if let array = viewModel.itemsArray, !array.isEmpty {
                         constructPicker(filterArray: array)
                     }
                     
@@ -65,14 +64,17 @@ struct BottomSheetView: View {
 extension BottomSheetView {
     func constructSelectButton() -> some View {
         Button {
-            if case .date = viewModel.pickerHeader {
-                isDateSelected = true
-                viewModel.selectedItem = viewModel.selectedDate.string(formatter: .customDateWithDashFormatter)
-                isShowing.toggle()
-            } else {
-                viewModel.selectedItem = viewModel.filtersArray?[viewModel.selectedIndex] ?? ""
-                isShowing.toggle()
+            if case .camera = viewModel.pickerHeader {
+                viewModel.selectedFilter.camera = viewModel.itemsArray?[viewModel.selectedIndex] ?? ""
             }
+            if case .date = viewModel.pickerHeader {
+                viewModel.selectedFilter.date = viewModel.selectedDate
+            }
+            if case .rover = viewModel.pickerHeader {
+                viewModel.selectedFilter.rover = viewModel.itemsArray?[viewModel.selectedIndex] ?? ""
+            }
+            
+            isShowing.toggle()
         } label: {
             ZStack {
                 Circle()
@@ -87,7 +89,6 @@ extension BottomSheetView {
     
     func constructDismissButton() -> some View {
         Button {
-            print("Pressed")
             isShowing.toggle()
         } label: {
             ZStack {
@@ -106,7 +107,6 @@ extension BottomSheetView {
             .datePickerStyle(.wheel)
             .padding()
             .labelsHidden()
-
     }
     
     func constructPicker(filterArray: [String]) -> some View {
@@ -118,4 +118,5 @@ extension BottomSheetView {
         }
         .pickerStyle(.wheel)
     }
+    
 }

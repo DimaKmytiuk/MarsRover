@@ -11,12 +11,10 @@ protocol FilterService {
     var filter: AnyPublisher<[FilterModel], Never> { get }
     
     func saveFilter(_ filter: FilterModel)
-    
     func deleteFilter(_ filter: FilterModel)
 }
 
-
-final class FilterServiceImpl: FilterService {
+struct FilterServiceImpl: FilterService {
         
     private let repository: FilterLocalRepository
     

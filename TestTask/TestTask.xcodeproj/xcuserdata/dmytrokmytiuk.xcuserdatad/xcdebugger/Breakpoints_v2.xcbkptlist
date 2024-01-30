@@ -14,8 +14,8 @@
             filePath = "TestTask/Modules/Root/RootView.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "94"
-            endingLineNumber = "94"
+            startingLineNumber = "92"
+            endingLineNumber = "92"
             landmarkName = "body"
             landmarkType = "24">
             <Locations>
@@ -48,6 +48,70 @@
                   startingLineNumber = "88"
                   endingLineNumber = "88"
                   offsetFromSymbolStart = "52">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "743321FF-4875-4388-AE02-7789EE89EFC8"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "TestTask/Modules/Root/RootViewModel.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "166"
+            endingLineNumber = "166"
+            landmarkName = "fetchPhotos()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "8AA85656-12AF-4650-84AD-A4B2BBE29B9A"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "TestTask/Modules/Root/RootViewModel.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "115"
+            endingLineNumber = "115"
+            landmarkName = "setupSubscriptions()"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "8AA85656-12AF-4650-84AD-A4B2BBE29B9A - 43466326e2a35f40"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "TestTask.RootViewModel.setupSubscriptions() -&gt; ()"
+                  moduleName = "TestTask"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/dmytrokmytiuk/Desktop/MarsRover/TestTask/TestTask/Modules/Root/RootViewModel.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "111"
+                  endingLineNumber = "111"
+                  offsetFromSymbolStart = "876">
+               </Location>
+               <Location
+                  uuid = "8AA85656-12AF-4650-84AD-A4B2BBE29B9A - 60de45d42a3a0761"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #4 (Foundation.Date) -&gt; () in TestTask.RootViewModel.setupSubscriptions() -&gt; ()"
+                  moduleName = "TestTask"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/dmytrokmytiuk/Desktop/MarsRover/TestTask/TestTask/Modules/Root/RootViewModel.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "111"
+                  endingLineNumber = "111"
+                  offsetFromSymbolStart = "144">
                </Location>
             </Locations>
          </BreakpointContent>

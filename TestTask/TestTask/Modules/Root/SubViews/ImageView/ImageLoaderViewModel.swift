@@ -10,9 +10,8 @@ import SwiftUI
 final class ImageLoaderViewModel: ObservableObject {
     
     @Published var image: UIImage?
-    let url: String
-    
     private var imageCache = NSCache<NSString, UIImage>()
+    let url: String
     
     init(image: UIImage? = nil, url: String) {
         self.image = image
@@ -22,22 +21,20 @@ final class ImageLoaderViewModel: ObservableObject {
     func loadImage() {
         if let cachedImage = getFromCache(name: url) {
             self.image = cachedImage
-
             return
         }
         
         guard let imageURL = URL(string: url) else { return }
-        
         URLSession.shared.dataTask(with: imageURL) { data, response, error in
             if let data = data, let uiImage = UIImage(data: data) {
-                DispatchQueue.main.async {
+                DispatchQueue.main.async { [weak self] in
+                    guard let self = self else { return }
                     self.image = uiImage
                     self.addToCache(image: uiImage, name: self.url)
                 }
             }
         }.resume()
     }
-
     
     private func addToCache(image: UIImage, name: String) {
         imageCache.setObject(image, forKey: name as NSString)

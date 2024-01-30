@@ -27,10 +27,10 @@ extension AppEnvironment {
 
 extension AppEnvironment {
     private static func configuratedServices(localRepositories: DIContainer.LocalRepositories) -> DIContainer.ServicesContainer {
-        let apiService: APIServiceImpl = APIServiceImpl()
+        let webService: WebService = WebServiceImpl()
         let filterService: FilterService = FilterServiceImpl(repository: localRepositories.filterLocalRepository)
         
-        return .init(APIService: apiService, filterService: filterService)
+        return .init(webService: webService, filterService: filterService)
     }
 }
 

@@ -8,8 +8,8 @@
 import Foundation
 
 struct FilterModel: Identifiable {
-    var id = UUID()
-    let rover: String
-    let camera: String
-    let date: String
+    let id = UUID()
+    var rover: String
+    var camera: String
+    var date: Date
 }

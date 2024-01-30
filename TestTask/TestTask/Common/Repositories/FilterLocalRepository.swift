@@ -11,6 +11,5 @@ protocol FilterLocalRepository {
     var filters: AnyPublisher<[FilterModel], Never> { get }
     
     func saveFilter(_ filter: FilterModel)
-    
     func deleteFilter(_ filter: FilterModel)
 }

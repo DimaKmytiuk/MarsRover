@@ -11,23 +11,16 @@ import Combine
 final class HistoryViewModel: ObservableObject {
     
     @Published var filers: [FilterModel] = []
-    @Binding var selectedDate: String
-    @Binding var selectedRover: String
-    @Binding var selectedCamera: String
+    @Binding var filterModel: FilterModel
     
     private var cancellables = Set<AnyCancellable>()
-
     let container: DIContainer
     
     init(container: DIContainer,
-         selectedDate: Binding<String>,
-         selectedRover: Binding<String>,
-         selectedCamera: Binding<String>
-    ) {
+         filterModel: Binding<FilterModel>) {
         self.container = container
-        _selectedDate = selectedDate
-        _selectedRover = selectedRover
-        _selectedCamera = selectedCamera
+        _filterModel = filterModel
+
         fetchFilters()
     }
     
@@ -37,9 +30,8 @@ final class HistoryViewModel: ObservableObject {
             .filterService
             .filter
             .receive(on: DispatchQueue.main)
-            .sink { filter in
-                self.filers = filter
-                print(self.filers)
+            .sink { [weak self] filter in
+                self?.filers = filter
             }
             .store(in: &cancellables)
     }
@@ -50,8 +42,9 @@ final class HistoryViewModel: ObservableObject {
             .filterService
             .deleteFilter(filter)
                 
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.00) { [weak self] in
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [weak self] in
             self?.fetchFilters()
         }
     }
+    
 }

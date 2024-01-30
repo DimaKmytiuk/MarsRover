@@ -25,7 +25,7 @@ struct RootView: View {
                                 .padding(.top, 16)
                                 .padding(.leading, 0)
                             
-                            Text(Date.changeDate(date: viewModel.selectedDate))
+                            Text(viewModel.selectedFilter.date.string(formatter: .userFriendly))
                                 .padding(.leading, 0)
                         }
                         .padding(.top)
@@ -70,10 +70,8 @@ struct RootView: View {
                                 .onAppear {
                                     if let lastItem = viewModel.filteredRovers.last, rover.id == lastItem.id {
                                         viewModel.currentPage += 1
-                                        viewModel.fetchPhotos()
                                     }
                                 }
-                            
                         }
                         .listRowBackground(
                             RoundedRectangle(cornerRadius: 25)
@@ -104,7 +102,6 @@ struct RootView: View {
                         }
                     }
                 }
-                
             }
             .onAppear {
                 viewModel.fetchPhotos()
@@ -137,7 +134,7 @@ private extension RootView {
                 Image("rover")
                     .padding(.leading)
                 
-                Text(viewModel.selectedRoverFilter)
+                Text(viewModel.selectedFilter.rover)
                     .foregroundColor(Color.black)
                     .bold()
                 
@@ -157,7 +154,7 @@ private extension RootView {
                 Image("camera")
                     .padding(.leading)
                 
-                Text(viewModel.selectedCameraFilter)
+                Text(viewModel.selectedFilter.camera)
                     .foregroundColor(Color.black)
                     .bold()
                 

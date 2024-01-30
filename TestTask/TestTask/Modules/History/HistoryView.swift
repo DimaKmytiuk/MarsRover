@@ -48,14 +48,11 @@ struct HistoryView: View {
                             .actionSheet(isPresented: $isPresented) {
                                 ActionSheet(title: Text("Menu Filter"), buttons: [
                                     .default(Text("Use")) {
-                                        viewModel.selectedDate = filter.date
-                                        viewModel.selectedCamera = filter.camera
-                                        viewModel.selectedRover = filter.rover
+                                        viewModel.filterModel = filter
                                         presintationMode.wrappedValue.dismiss()
-                                    }  ,
+                                    },
                                     .destructive(Text("Delete")) {
                                         viewModel.removeFilter(filter: filter)
-                                        
                                         isPresented = false
                                     },
                                     .cancel()
@@ -127,7 +124,7 @@ private extension HistoryView {
                         .foregroundColor(Color.gray)
                         .font(.system(size: 16, weight: .medium))
                     
-                    Text(Date.changeDate(date: filterModel.date))
+                    Text(filterModel.date.string(formatter: .userFriendly))
                         .foregroundColor(Color.black)
                         .font(.system(size: 16, weight: .bold))
                     

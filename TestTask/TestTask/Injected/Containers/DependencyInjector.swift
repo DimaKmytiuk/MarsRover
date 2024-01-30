@@ -14,6 +14,6 @@ struct DIContainer {
     
     init(services: DIContainer.ServicesContainer) {
         self.services = services
-        }
+    }
     
 }

@@ -18,5 +18,4 @@ struct PhotoDTO: Codable {
     let img_src: String
     let earth_date: String
     let rover: RoverDTO
-    
 }

@@ -15,61 +15,25 @@ final class RootViewModel: ObservableObject {
     @Published var rovers: [RoverModel] = []
     @Published var filteredRovers: [RoverModel] = []
     @Published var filterArray: [FilterModel] = []
-    @Published var cameraFilterArray: [String] = ["All"]
-    @Published var roverFilterArray: [String] = ["All"]
-    @Published var selectedDate: String = Date().string(formatter: .customDateWithDashFormatter) {
-        didSet {
-            discountParameters()
-        }
-    }
-    @Published var isCameraPopupPresented = false {
-        didSet {
-            if isCameraPopupPresented {
-                isRoverPopupPresented = false
-                isCalendarPopupPresented = false
-            }
-        }
-    }
-    @Published var isRoverPopupPresented = false {
-        didSet {
-            if isRoverPopupPresented {
-                isCameraPopupPresented = false
-                isCalendarPopupPresented = false
-            }
-        }
-    }
-    @Published var isCalendarPopupPresented = false {
-        didSet {
-            if isCalendarPopupPresented {
-                isRoverPopupPresented = false
-                isCameraPopupPresented = false
-            }
-        }
-    }
-    @Published var selectedCameraFilter: String = "All" {
-        didSet {
-            filterCameras()
-        }
-    }
-    @Published var selectedRoverFilter: String = "All" {
-        didSet {
-            filterRovers()
-        }
-    }
+    @Published var cameraNames: [String] = ["All"]
+    @Published var roverNames: [String] = ["All"]
+    @Published var selectedFilter: FilterModel = FilterModel(rover: "All", camera: "All", date: Date())
+    @Published var isCameraPopupPresented = false
+    @Published var isRoverPopupPresented = false
+    @Published var isCalendarPopupPresented = false
+    
     private var cancellables = Set<AnyCancellable>()
-    private var imageCache = NSCache<NSString, UIImage>()
     private let container: DIContainer
     
     init(container: DIContainer) {
         self.container = container
+        setupSubscriptions()
     }
     
     var historyViewModel: HistoryViewModel {
-        HistoryViewModel(container: container,
-                         selectedDate: .bindTo(self, keyPath: \.selectedDate),
-                         selectedRover: .bindTo(self, keyPath: \.selectedRoverFilter),
-                         selectedCamera: .bindTo(self, keyPath: \.selectedCameraFilter)
-        )
+        HistoryViewModel(
+            container: container,
+            filterModel: .bindTo(self, keyPath: \.selectedFilter))
     }
     
     func constructImageLoaderViewModel(url: String) -> ImageLoaderViewModel {
@@ -80,40 +44,129 @@ final class RootViewModel: ObservableObject {
         switch type {
         case .camera:
             BottomSheetViewModel(
-                array: cameraFilterArray,
-                title: type, selectedIndex: cameraFilterArray.firstIndex(of: selectedCameraFilter) ?? .zero,
-                selectedItem: .bindTo(self, keyPath: \.selectedCameraFilter))
+                itemsArray: cameraNames,
+                selectedDate: Date(),
+                title: type,
+                selectedIndex: cameraNames
+                    .firstIndex(of: selectedFilter.camera) ?? .zero,
+                selectedFilter: .bindTo(self, keyPath: \.selectedFilter))
         case .rover:
-            BottomSheetViewModel(array: roverFilterArray,
-                                 title: type, selectedIndex: roverFilterArray.firstIndex(of: selectedRoverFilter) ?? .zero,
-                                 selectedItem: .bindTo(self, keyPath: \.selectedRoverFilter))
+            BottomSheetViewModel(
+                itemsArray: roverNames,
+                selectedDate: Date(),
+                title: type,
+                selectedIndex: roverNames
+                    .firstIndex(of: selectedFilter.rover) ?? .zero,
+                selectedFilter: .bindTo(self, keyPath: \.selectedFilter))
         case .date:
-            BottomSheetViewModel(title: type,
-                                 selectedIndex: .zero, selectedItem: .bindTo(self, keyPath: \.selectedDate))
+            BottomSheetViewModel(
+                itemsArray: [],
+                selectedDate: selectedFilter.date,
+                title: type,
+                selectedIndex: .zero,
+                selectedFilter: .bindTo(self, keyPath: \.selectedFilter))
         }
+    }
+    
+    func setupSubscriptions() {
+        $isCameraPopupPresented
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] _ in
+                guard let self = self else { return }
+                
+                if isCameraPopupPresented {
+                    isRoverPopupPresented = false
+                    isCalendarPopupPresented = false
+                }
+            }
+            .store(in: &cancellables)
+        
+        $isRoverPopupPresented
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] _ in
+                guard let self = self else { return }
+                
+                if isRoverPopupPresented {
+                    isCameraPopupPresented = false
+                    isCalendarPopupPresented = false
+                }
+            }
+            .store(in: &cancellables)
+        
+        $isCalendarPopupPresented
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] _ in
+                guard let self = self else { return }
+                
+                if isCalendarPopupPresented {
+                    isCameraPopupPresented = false
+                    isRoverPopupPresented = false
+                }
+            }
+            .store(in: &cancellables)
+        
+        $selectedFilter
+            .map(\.date)
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] date in
+                guard let self = self else { return }
+                
+                discountParameters()
+            }
+            .store(in: &cancellables)
+        
+        $selectedFilter
+            .map(\.rover)
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] rover in
+                guard let self = self else { return }
+                
+                filteredRovers = filterItems(rovers: filteredRovers)
+            }
+            .store(in: &cancellables)
+        
+        $selectedFilter
+            .map(\.camera)
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] camera in
+                guard let self = self else { return }
+                
+                filteredRovers = filterItems(rovers: filteredRovers)
+            }
+            .store(in: &cancellables)
+        
+        $currentPage
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] _ in
+                guard let self = self else { return }
+                
+                fetchPhotos()
+            }
+            .store(in: &cancellables)
     }
     
     func saveFilter() {
         container
             .services
             .filterService
-            .saveFilter(.init(
-                rover: selectedRoverFilter,
-                camera: selectedCameraFilter,
-                date: selectedDate))
+            .saveFilter(
+                .init(
+                    rover: selectedFilter.rover,
+                    camera: selectedFilter.camera,
+                    date: selectedFilter.date)
+            )
     }
     
     func fetchPhotos() {
         container
             .services
-            .APIService
+            .webService
             .getPhotos(
                 apiKey: Constants.apiKey,
-                earthDate: selectedDate,
+                earthDate: selectedFilter.date.string(formatter: .dash),
                 page: currentPage)
             .receive(on: RunLoop.main)
             .sink(receiveCompletion: { data in
-                
             }, receiveValue: { [weak self] data in
                 guard let self else { return }
                 
@@ -123,10 +176,9 @@ final class RootViewModel: ObservableObject {
                                date: photo.earth_date,
                                imageSRC: photo.img_src)
                 }
-                self.rovers.append(contentsOf: rovers)
-                self.filteredRovers.append(contentsOf: rovers)
                 removeMatchedNames(rovers: rovers)
-                                                
+                filteredRovers.append(contentsOf: filterItems(rovers: rovers))
+                
             }).store(in: &cancellables)
     }
     
@@ -137,25 +189,32 @@ final class RootViewModel: ObservableObject {
         fetchPhotos()
     }
     
-    private func filterCameras() {
-         if selectedCameraFilter == "All" {
-             filteredRovers = rovers
-         } else {
-             filteredRovers = rovers.filter { $0.camera == selectedCameraFilter }
-         }
-     }
-    
-    private func filterRovers() {
-         if selectedRoverFilter == "All" {
-             filteredRovers = rovers
-         } else {
-             filteredRovers = rovers.filter { $0.name == selectedRoverFilter }
-         }
-     }
+    private func filterItems(rovers: [RoverModel]) -> [RoverModel] {
+        var filteredArray = rovers
+        
+        if selectedFilter.camera != "All" {
+            filteredArray = rovers.filter { $0.camera == selectedFilter.camera }
+        }
+        if selectedFilter.rover != "All" {
+            filteredArray = rovers.filter { $0.name == selectedFilter.rover }
+        }
+        return filteredArray
+    }
     
     private func removeMatchedNames(rovers: [RoverModel]) {
-        cameraFilterArray = ["All"] +  Set(rovers.map { $0.camera }).sorted()
-        roverFilterArray = ["All"] + Set(rovers.map { $0.name }).sorted()
+        let uniqueCameraNames = Set(rovers.map { $0.camera }).sorted()
+        let uniqueRoverNames = Set(rovers.map { $0.name }).sorted()
+        
+        for cameraName in uniqueCameraNames {
+            if !cameraNames.contains(cameraName) {
+                cameraNames.append(cameraName)
+            }
+        }
+        for roverName in uniqueRoverNames {
+            if !roverNames.contains(roverName) {
+                roverNames.append(roverName)
+            }
+        }
     }
 }
 

@@ -58,6 +58,7 @@ enum MarsRoverEndpoint: APIEndpoint {
 
 protocol APIClient {
     associatedtype EndpointType: APIEndpoint
+    
     func request<T: Decodable>(_ endpoint: EndpointType) -> AnyPublisher<T, Error>
 }
 
@@ -67,18 +68,17 @@ final class URLSessionAPIClient<EndpointType: APIEndpoint>: APIClient {
         components?.path = endpoint.path
         
         if let parameters = endpoint.parameters {
-            components?.queryItems = parameters.map{ key, value in
+            components?.queryItems = parameters.map { key, value in
                 URLQueryItem(name: key, value: "\(value)")
             }
         }
         
         guard let url = components?.url else {
             let error = URLError(.badURL)
+            
             return Fail<T, Error>(error: error).eraseToAnyPublisher()
         }
-        
-        print(url)
-        
+                
         var request = URLRequest(url: url)
         request.httpMethod = HTTPMethod.get.rawValue
             

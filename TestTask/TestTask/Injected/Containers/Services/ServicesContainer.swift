@@ -10,12 +10,11 @@ import Foundation
 extension DIContainer {
     
     struct ServicesContainer {
-        let APIService: APIService
+        let webService: WebService
         let filterService: FilterService
         
-        init(APIService: APIService,
-             filterService: FilterService) {
-            self.APIService = APIService
+        init(webService: WebService, filterService: FilterService) {
+            self.webService = webService
             self.filterService = filterService
         }
     }

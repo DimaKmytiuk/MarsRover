@@ -10,25 +10,23 @@ import SwiftUI
 @main
 struct TestTaskApp: App {
     
-    private var environment: AppEnvironment
-    @State private var showLaunchView = true
+    @StateObject private var appEngine: AppEngine = AppEngine()
+    private let environment: AppEnvironment
     
     init() {
         environment = AppEnvironment.bootstrap()
-
     }
     
     var body: some Scene {
         WindowGroup {
             NavigationView {
-                if showLaunchView {
+                switch appEngine.checkAppEngineState() {
+                case .launch:
                     LaunchView()
                         .onAppear {
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-                                showLaunchView.toggle()
-                                }
+                            appEngine.startEngine()
                         }
-                } else {
+                case .launched:
                     RootView(viewModel: .init(container: environment.container))
                 }
             }

@@ -1,5 +1,5 @@
 //
-//  APIService.swift
+//  WebService.swift
 //  TestTask
 //
 //  Created by Dmytro Kmytiuk on 29.01.2024.
@@ -7,11 +7,11 @@
 
 import Combine
 
-protocol APIService {
+protocol WebService {
     func getPhotos(apiKey: String, earthDate: String, page: Int) -> AnyPublisher<PhotoArrayDTO, Error>
 }
 
-final class APIServiceImpl: APIService {
+final class WebServiceImpl: WebService {
     
     let apiClient = URLSessionAPIClient<MarsRoverEndpoint>()
     
